@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>house puzzle</title>
+    <style>
+      * {
+        margin: 0%;
+        padding: 0%;
+      }
+
+      body {
+        background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.459), white, rgb(14, 13, 13));
+      }
+
+      /* designing puzzle images in box */
+      .puzzlebox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: fixed;
+        height: 100vh;
+        width: 100%;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(3, 150px);
+        height: 450px;
+        border: 5px solid;
+      }
+
+      input {
+        height: 150px;
+        width: 150px;
+      }
+
+      /* actual image as hint */
+      .fullimage {
+        position: absolute;
+        right: 40px;
+        top: 30px;
+      }
+
+      h1 {
+        font-size: 30px;
+        text-align: center;
+        font-family: sans-serif;
+        padding: 0px;
+        margin: 0%;
+        background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.459), white, rgb(14, 13, 13));
+      }
+
+      /* designing restart button for shuffling image */
+      .restartcontainer {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .restart {
+        width: 110px;
+        height: 40px;
+        background-color: rgb(136, 70, 40);
+        border: none;
+        color: burlywood;
+        border-radius: 20px;
+        font-weight: bolder;
+        font-family: monospace;
+      }
+
+      /* alertpopup message */
+      /* designing background */
+      .inform {
+        display: none;
+        background-color: black;
+        opacity: 0.8;
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+      }
+
+      /* designing inner box  */
+      .overpopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border: 2px solid black;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        border-radius: 20px;
+      }
+
+      /* designing ok button in popup message */
+      .OK {
+        margin-top: 10px;
+        padding: 5px 10px;
+        float: right;
+        border-radius: 20px;
+        padding: 10px;
+        border: none;
+      }
+
+      .OK:hover {
+        color: white;
+        background-color: darkgoldenrod;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+    </style>
+    <script>
+      //create a empty variable for blank image
+      var empty = "http://127.0.0.1:5500/imageonline/empty.png";
+
+      //swap method
+      function swap(swap1, swap2) {
+        let tempSrc = swap1.src;
+        swap1.src = swap2.src;
+        swap2.src = tempSrc;
+      }
+
+      //main function
+      function play(buttonId) {
+        switch (buttonId) {
+          //swap for button1
+          case "button1":
+            if (button2.src === empty) {
+              swap(button1, button2);
+            }
+            if (button4.src === empty) {
+              swap(button1, button4);
+            }
+            break;
+          //swap for button2
+          case "button2":
+            if (button1.src === empty) {
+              swap(button2, button1);
+            }
+            if (button3.src === empty) {
+              swap(button2, button3);
+            }
+            if (button5.src === empty) {
+              swap(button2, button5);
+            }
+            break;
+          //swap for button3
+          case "button3":
+            if (button2.src === empty) {
+              swap(button3, button2);
+            }
+            if (button6.src === empty) {
+              swap(button3, button6);
+            }
+            break;
+          //swap for button4
+          case "button4":
+            if (button1.src === empty) {
+              swap(button4, button1);
+            }
+            if (button5.src === empty) {
+              swap(button4, button5);
+            }
+            break;
+          //swap for button5
+          case "button5":
+            if (button2.src === empty) {
+              swap(button5, button2);
+            }
+            if (button4.src === empty) {
+              swap(button5, button4);
+            }
+            if (button6.src === empty) {
+              swap(button5, button6);
+            }
+            if (button8.src === empty) {
+              swap(button5, button8);
+            }
+            break;
+          //swap for button6
+          case "button6":
+            if (button3.src === empty) {
+              swap(button6, button3);
+            }
+            if (button5.src === empty) {
+              swap(button6, button5);
+            }
+            if (button9.src === empty) {
+              swap(button6, button9);
+            }
+            break;
+          //swap for button7
+          case "button7":
+            if (button4.src === empty) {
+              swap(button7, button4);
+            }
+            if (button8.src === empty) {
+              swap(button7, button8);
+            }
+            break;
+          //swap for button8
+          case "button8":
+            if (button5.src === empty) {
+              swap(button8, button5);
+            }
+            if (button7.src === empty) {
+              swap(button8, button7);
+            }
+            if (button9.src === empty) {
+              swap(button8, button9);
+            }
+            break;
+          //swap for button9
+          case "button9":
+            if (button8.src === empty) {
+              swap(button9, button8);
+            }
+            if (button6.src === empty) {
+              swap(button9, button6);
+            }
+            break;
+        }
+        /* alertpopup message */
+        checkwin();
+      }
+      ///alert check win method
+      function checkwin() {
+        if (
+          document.getElementById("button1").src === "http://127.0.0.1:5500/imageonline/1.jpeg" &&
+          document.getElementById("button2").src === "http://127.0.0.1:5500/imageonline/2.jpeg" &&
+          document.getElementById("button3").src === "http://127.0.0.1:5500/imageonline/3.jpeg" &&
+          document.getElementById("button4").src === "http://127.0.0.1:5500/imageonline/4.jpeg" &&
+          document.getElementById("button5").src === "http://127.0.0.1:5500/imageonline/5.jpeg" &&
+          document.getElementById("button6").src === "http://127.0.0.1:5500/imageonline/6.jpeg" &&
+          document.getElementById("button7").src === "http://127.0.0.1:5500/imageonline/7.jpeg" &&
+          document.getElementById("button8").src === "http://127.0.0.1:5500/imageonline/8.jpeg" &&
+          document.getElementById("button9").src === "http://127.0.0.1:5500/imageonline/empty.png"
+        ) {
+          //set an image in blank as actual image
+          document.getElementById("button9").src = "http://127.0.0.1:5500/imageonline/9.jpeg";
+          //display a popup win message
+          overpopup();
+        }
+      }
+      ///when solved puzzle  alert win message
+      function overpopup() {
+        document.getElementById("inform").style.display = "block";
+      }
+      ///in popup message when press ok button the message disable
+      function OK() {
+        document.getElementById("inform").style.display = "none";
+      }
+      ////restart method to shuffle image
+      function restart() {
+        document.getElementById("button1").src = "http://127.0.0.1:5500/imageonline/8.jpeg";
+        document.getElementById("button2").src = "http://127.0.0.1:5500/imageonline/4.jpeg";
+        document.getElementById("button3").src = "http://127.0.0.1:5500/imageonline/2.jpeg";
+        document.getElementById("button4").src = "http://127.0.0.1:5500/imageonline/7.jpeg";
+        document.getElementById("button5").src = "http://127.0.0.1:5500/imageonline/5.jpeg";
+        document.getElementById("button6").src = "http://127.0.0.1:5500/imageonline/3.jpeg";
+        document.getElementById("button7").src = "http://127.0.0.1:5500/imageonline/1.jpeg";
+        document.getElementById("button8").src = "http://127.0.0.1:5500/imageonline/6.jpeg";
+        document.getElementById("button9").src = "http://127.0.0.1:5500/imageonline/empty.png";
+      }
+    </script>
+  </head>
+  <body>
+    <!-- ///croped set of puzzle images/// -->
+    <div class="puzzlebox">
+      <div class="container">
+        <input type="image" id="button1" src="4.jpeg" onclick="play('button1')" />
+        <input type="image" id="button2" src="empty.png" onclick="play('button2')" />
+        <input type="image" id="button3" src="6.jpeg" onclick="play('button3')" />
+        <input type="image" id="button4" src="1.jpeg" onclick="play('button4')" />
+        <input type="image" id="button5" src="8.jpeg" onclick="play('button5')" />
+        <input type="image" id="button6" src="3.jpeg" onclick="play('button6')" />
+        <input type="image" id="button7" src="2.jpeg" onclick="play('button7')" />
+        <input type="image" id="button8" src="5.jpeg" onclick="play('button8')" />
+        <input type="image" id="button9" src="7.jpeg" onclick="play('button9')" />
+      </div>
+
+      <!-- ///restart button for shuffling puzzle images -->
+      <div class="restartcontainer">
+        <button class="restart" onclick="restart()">RESTART</button>
+      </div>
+
+      <!-- /// actual image as hint -->
+      <div class="fullimage">
+        <h1>HINT</h1>
+        <img src="house.jpeg" alt="Full Image" width="250px" height="200px" />
+      </div>
+    </div>
+
+    <!-- ///alert mesage -->
+    <div id="inform" class="inform">
+      <div class="overpopup">
+        <p>CONGRATS*! YOU SOLVED THE PUZZLE... <br />🎉🥳</p>
+        <button id="OK" onclick="OK()" class="OK">OK</button>
+      </div>
+    </div>
+  </body>
+</html>
